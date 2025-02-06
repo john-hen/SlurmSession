@@ -1,0 +1,121 @@
+# Project meta information
+
+[project]
+name = 'SlurmSession'
+authors = [
+    {name = 'John Hennig'},
+]
+version = '1.0.0'
+description = 'Starts an interactive session on a compute node via Slurm.'
+keywords = ['HPC', 'Slurm']
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Programming Language :: Python :: 3',
+    'Operating System :: OS Independent',
+]
+readme = 'ReadMe.md'
+
+requires-python = '>= 3.10'
+dependencies = [
+    'Typer  >= 0.15',
+    'Rich   >= 13',
+    'pyYaml >= 6',
+]
+
+[dependency-groups]
+test = [
+    'Ruff       >= 0.9',
+    'pyTest     >= 8',
+    'pyTest-cov >= 6',
+]
+dev = [
+    {include-group = 'test'}
+]
+
+
+[project.scripts]
+slurmsession = 'slurmsession:cli'
+sls          = 'slurmsession:cli'
+
+
+# Build backend: Flit
+
+[build-system]
+requires      = ['flit_core >= 3.4']
+build-backend = 'flit_core.buildapi'
+
+[tool.flit.module]
+name = 'slurmsession'
+
+
+# Code linter: Ruff
+
+[tool.ruff]
+line-length    = 79
+indent-width   = 4
+target-version = 'py310'
+include = ['pyproject.toml', 'slurm_session/**/*.py', 'tests/**/*.py']
+
+    [tool.ruff.format]
+    # The project does not actually use the Ruff formatter (only the linter),
+    # but these settings would be used if it did.
+    quote-style = 'single'
+    line-ending = 'lf'
+
+    [tool.ruff.lint]
+    preview = true
+    select = [
+        'F',                  # basic linter rules
+        'E',                  # code style errors
+        'W',                  # code style warnings
+        'B',                  # possible bugs
+        'C4',                 # correct comprehensions
+        'FA',                 # future annotations
+        'PIE',                # miscellaneous lints
+        'ARG',                # unused function arguments
+        'RSE',                # raised exceptions
+        'Q',                  # quotation marks
+        'SIM',                # simplifiable code
+        'PERF',               # performance anti-pattens
+        'PT',                 # pyTest style
+        'PTH',                # pathlib use mandatory
+        'ERA',                # commented-out code
+        'T10',                # debugger calls
+        'UP',                 # upgradable code
+        'RUF100',             # unnecessary `noqa` directives
+    ]
+    ignore = [
+        'E201',               # whitespace after (
+        'E202',               # whitespace before (
+        'E221',               # missing whitespace before operator
+        'E226',               # missing whitespace around operator
+        'E241',               # multiple spaces after comma
+        'E251',               # unexpected spaces around keyword equals
+        'E272',               # multiple spaces before keyword
+        'E731',               # assignment of `lambda` expression
+    ]
+
+    [tool.ruff.lint.per-file-ignores]
+    '__init__.py' = [
+        'F401',               # imported but unused
+    ]
+
+    [tool.ruff.lint.flake8-quotes]
+    inline-quotes    = 'single'
+    docstring-quotes = 'double'
+    avoid-escape     = true
+
+
+# Test runner: pyTest
+
+[tool.pytest.ini_options]
+testpaths = ['tests/']
+addopts = ['--verbose']
+console_output_style = 'count'
+
+[tool.coverage.run]
+source = ['slurmsession/']
+relative_files = true
+
+[tool.coverage.report]
+exclude_lines = ['pragma: no cover']

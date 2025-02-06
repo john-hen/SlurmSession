@@ -1,0 +1,14 @@
+# Build artifacts
+/dist/
+__pycache__/
+uv.lock
+
+# Test artifacts
+/coverage
+/.coverage
+.pytest_cache/
+.ruff_cache/
+
+# OS cruft
+Thumbs.db
+.DS_Store

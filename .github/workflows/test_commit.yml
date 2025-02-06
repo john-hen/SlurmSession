@@ -1,0 +1,41 @@
+﻿# Test commit on all supported Python versions.
+name: Test commit
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+
+  test:
+      runs-on: ubuntu-latest
+      strategy:
+          matrix:
+              python:
+                - "3.10"
+                - "3.11"
+                - "3.12"
+                - "3.13"
+      env:
+          UV_PYTHON: ${{ matrix.python }}
+      steps:
+        - name: Check out code.
+          uses: actions/checkout@v4
+
+        - name: Install Python ${{ matrix.python }}.
+          uses: actions/setup-python@v5
+          with:
+              python-version: ${{ matrix.python }}
+
+        - name: Install UV.
+          uses: astral-sh/setup-uv@v5
+          with:
+              enable-cache: true
+              cache-dependency-glob: "uv.lock"
+
+        - name: Install package.
+          run:  uv sync
+
+        - name: Run test suite.
+          run:  uv run pytest
+
+        - name: Lint code.
+          run:  uv run ruff check

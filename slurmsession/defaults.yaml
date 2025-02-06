@@ -1,0 +1,11 @@
+executable: "srun"
+arguments:
+- "--pty"
+
+nodes:  1
+tasks:  1
+cores:  4
+memory: "4G"
+time:   "1:00:00"
+
+shell:  "bash"
